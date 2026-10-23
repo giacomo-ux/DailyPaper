@@ -1,0 +1,49 @@
+name: Build daily paper
+
+on:
+  schedule:
+    - cron: "0 6 * * *"
+      timezone: "Europe/Copenhagen"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -r generator/requirements.txt
+
+      - name: Generate newspaper
+        env:
+          CALENDAR_ICS_URLS: ${{ secrets.CALENDAR_ICS_URLS }}
+        run: python generator/generate.py
+
+      - name: Prepare published image
+        env:
+          PAPER_NAME: ${{ secrets.PAPER_NAME }}
+        run: |
+          test -n "$PAPER_NAME"
+          mkdir -p public
+          cp generator/out/paper.png "public/$PAPER_NAME"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: public
+
+      - uses: actions/deploy-pages@v4
