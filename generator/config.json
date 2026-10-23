@@ -1,0 +1,13 @@
+{
+  "title": "THE DAILY PAPER",
+  "timezone": "Europe/Copenhagen",
+  "screen": { "width": 1072, "height": 1448 },
+  "weather": { "name": "Copenhagen", "latitude": 55.68, "longitude": 12.57 },
+  "calendar_ics_urls": [],
+  "items_per_feed": 4,
+  "news_feeds": [
+    { "name": "DR Nyheder", "url": "https://www.dr.dk/nyheder/service/feeds/allenyheder" },
+    { "name": "BBC World", "url": "https://feeds.bbci.co.uk/news/world/rss.xml" },
+    { "name": "Reuters", "url": "https://feeds.reuters.com/reuters/topNews" }
+  ]
+}
